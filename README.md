@@ -18,7 +18,7 @@ As discussed in (3), Bernard's method for computing the WBGT appears to be more 
 
 ### How to install
 
-Until this is on CRAN, the best way to install this package is to install the `devtools` package and run `devtools::install_github("maxlieblich/wbgt")`. 
+Until this is on CRAN, the best way to install this package is to install the `devtools` package and run `devtools::install_github("mdljts/wbgt")`. 
 
 ### Acknowledgments
 
