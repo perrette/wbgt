@@ -1,4 +1,4 @@
-## wbgt
+# wbgt
 
 This R package can be used to estimate wet bulb globe temperature (WBGT) from datasets of standard meterological measurements using models developed by Liljegren et al (1).  
 
@@ -10,7 +10,7 @@ Several models for estimating WBGT from meteorological data have been developed,
 
 ### What is in this package?
 
-This package is currently a simple `R` wrapper around Liljegren et al's `C` code to allow for batch estimation of WBGTs from a meteorological input dataset.
+This package is currently a simple R wrapper around Liljegren et al's C code to allow for batch estimation of WBGTs from a meteorological input dataset.
 
 ### Future plans
 
@@ -18,7 +18,9 @@ As discussed in (3), Bernard's method for computing the WBGT appears to be more 
 
 ### How to install
 
-Until this is on CRAN, the best way to install this package is to install the `devtools` package and run `devtools::install_github("mdljts/wbgt")`. 
+Until this is on CRAN (which may never happen), the best way to install this package is to install the `devtools` package and run `devtools::install_github("mdljts/wbgt")`. **If you are using Windows, make sure you have installed [Rtools](https://cran.r-project.org/bin/windows/Rtools/) or installation will fail.** 
+
+On all platforms, you must make sure you have a suitable C compiler installed (which is accomplished when installing Rtools on Windows, and installing Xcode or the Command Line Tools for Xcode in OS X). Linux distributions have their own ways of accomplishing this. or more basic info on this general subject, see (at they very least) the introduction to Hadley Wickham's [excellent book](http://r-pkgs.had.co.nz/intro.html).
 
 ### Acknowledgments
 
