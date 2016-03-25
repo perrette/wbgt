@@ -18,7 +18,16 @@ As discussed in (3), Bernard's method for computing the WBGT appears to be more 
 
 ### How to install
 
-Until this is on CRAN (which may never happen), the best way to install this package is to install the `devtools` package and run `devtools::install_github("mdljts/wbgt")`. **If you are using Windows, make sure you have installed [Rtools](https://cran.r-project.org/bin/windows/Rtools/) or installation will fail.** 
+Until this is on CRAN (which may never happen), the best way to install this package is using the `devtools` package. Here's an example of code you can run in the R console to install the package.
+```
+# run the following line if devtools is not installed
+install.packages("devtools")
+
+# this line uses devtools to install the package from GitHub
+devtools::install_github("mdljts/wbgt")
+```
+
+**If you are using Windows, make sure you have installed [Rtools](https://cran.r-project.org/bin/windows/Rtools/) or installation will fail.** 
 
 On all platforms, you must make sure you have a suitable C compiler installed (which is accomplished when installing Rtools on Windows, and installing Xcode or the Command Line Tools for Xcode in OS X). Linux distributions have their own ways of accomplishing this. or more basic info on this general subject, see (at they very least) the introduction to Hadley Wickham's [excellent book](http://r-pkgs.had.co.nz/intro.html).
 
