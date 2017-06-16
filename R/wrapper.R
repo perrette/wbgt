@@ -17,7 +17,7 @@ out <- .C("wbgt", num_obs=as.integer(num_obs), year=as.integer(year), month=as.i
             zspeed=as.single(zspeed), 
             dT=as.single(dT), urban=as.integer(urban), est_speed=as.single(est_speed), 
             Tg=as.single(Tg), 
-            Tnwb=as.single(Tnwb), Tpsy=as.single(Tpsy), Twbg=as.single(Twbg), status=as.integer(status), PACKAGE="wbgt")[[22]]
+            Tnwb=as.single(Tnwb), Tpsy=as.single(Tpsy), Twbg=as.single(Twbg), status=as.integer(status), PACKAGE="wbgt")[["Twbg"]]
 
 # any calculation based on pressure outside of normal range yields NA
 out[pres > 2000 | pres < 800] <- NA
