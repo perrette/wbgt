@@ -79,7 +79,7 @@
 #define	REF_HEIGHT	2.0 
 #define	MIN_SPEED	0.13
 #define	CONVERGENCE	0.02
-#define	MAX_ITER	5000
+#define	MAX_ITER	50
 
 /*
  * All function declarations in this file are extracted from Liljegren's original code 
