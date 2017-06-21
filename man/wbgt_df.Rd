@@ -15,7 +15,9 @@ wbgt_df(data)
   }
 }
 \value{
-    A copy of the data frame input with a new column containing the wet bulb globe temperature in degrees C for each observation.
+    A copy of the data frame input with a new column containing the wet bulb globe temperature in degrees C 
+    for each observation. In contrast to the function `wbgt` in this package, this function does not 
+    retain the additional calculations (`Tpsy`, `Tnwb`, `Tg`, `status`).
 }
 \author{
     Max Lieblich, June Spector

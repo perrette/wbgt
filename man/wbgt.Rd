@@ -66,14 +66,17 @@ wbgt(year, month, day, hour, minute, gmt, avg,
 
 }
 \value{
-    The wet bulb globe temperature in degrees C.
+    A list containing all of the input variables (described above) in addition to
+	`Twbg` (the wet bulb globe temperature in degrees C), `Tpsy` (psychrometric wet bulb temperature in degrees C), 
+	`Tnwb` (natural wet bulb temperature in degrees C), `Tg` (the globe temperature in degrees C), and `status`
+	(with 0 indicating convergence and -1 indicating non-convergence of the Liljegren algorithm).
 }
 \author{
     Max Lieblich, June Spector
 }
 
 \examples{
-wbgt(2015, 1, 2, 4, 4, -8, 15, 46.2, -120.0, 1000, 1017.8, 12, 45, 1.24, 2.1, -0.1, 0)
+wbgt(2015, 1, 2, 4, 4, -8, 15, 46.2, -120.0, 1000, 1017.8, 12, 45, 1.24, 2.1, -0.1, 0)$Twbg
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

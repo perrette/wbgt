@@ -1,5 +1,5 @@
 Package: wbgt
-Version: 1.1
+Version: 1.2
 Date: 2017-06-16
 Title: Wet bulb globe temperature
 Authors@R: as.person(c("Max Lieblich <lieblich@uw.edu> [aut, cre]",

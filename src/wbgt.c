@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  * 
- * Copyright (c) 2016 Max Lieblich
+ * Copyright (c) 2016-2017 Max Lieblich
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,10 +30,11 @@
  * 1. The "main" function has been removed.
  * 2. All function declarations have been converted from K&R style to ANSI C99
  *    compliant style and moved to "wbgt.h".
- * 3. Parameter documentation for functions is included in "wbgt.h"; these are
+ * 3. All floats have been converted to doubles to integrate more easily with R.
+ * 4. Parameter documentation for functions is included in "wbgt.h"; these are
  *    copies of comments in "wbgt.c.original" accompanying the original K&R
  *    parameter declarations.
- * 4. For documentation in its original location, see "wbgt.c.original"
+ * 5. For documentation in its original location, see "wbgt.c.original"
  * 
  * Max Lieblich, University of Washington, 2016
  */

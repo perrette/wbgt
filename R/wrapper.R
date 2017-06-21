@@ -32,5 +32,5 @@ wbgt_df <- function(data) {
   }
   with(data, dplyr::mutate(data, wbgt=wbgt(year, month, day, hour, minute,
              gmt, avg, lat, lon, solar, pres, 
-             Tair, relhum, speed, zspeed, dT, urban)))
+             Tair, relhum, speed, zspeed, dT, urban)$Twbg))
 }
