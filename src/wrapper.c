@@ -39,9 +39,6 @@ void wbgt(int *num_obs, int *year, int *month, int *day, int *hour, int *minute,
   int n = *num_obs;
   for (int i = 0; i < n; ++i)
   {
-    if (zspeed[i] == REF_HEIGHT) {
-      est_speed[i] = speed[i];
-    }
     status[i] = calc_wbgt(year[i], month[i], day[i], hour[i], minute[i], gmt[i], avg[i],
         lat[i], lon[i], solar[i], pres[i], Tair[i], relhum[i], speed[i], zspeed[i],
         dT[i], urban[i],
