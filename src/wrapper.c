@@ -33,15 +33,16 @@
 void wbgt(int *num_obs, int *year, int *month, int *day, int *hour, int *minute, int *gmt, int *avg, 
     double *lat, double *lon, double *solar, double *pres, double *Tair, double *relhum, double *speed, double *zspeed, 
     double *dT, int *urban, 
-    double *est_speed, double *Tg, double *Tnwb, double *Tpsy, double *Twbg,
+    double *Tg, double *Tnwb, double *Tpsy, double *Twbg,
     int *status)
 {
   int n = *num_obs;
+  double est_speed = 0.;
   for (int i = 0; i < n; ++i)
   {
     status[i] = calc_wbgt(year[i], month[i], day[i], hour[i], minute[i], gmt[i], avg[i],
         lat[i], lon[i], solar[i], pres[i], Tair[i], relhum[i], speed[i], zspeed[i],
         dT[i], urban[i],
-        est_speed + i, Tg + i, Tnwb + i, Tpsy + i, Twbg + i);
+        &est_speed, Tg + i, Tnwb + i, Tpsy + i, Twbg + i);
   }
 }

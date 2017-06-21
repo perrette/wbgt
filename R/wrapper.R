@@ -3,7 +3,6 @@ wbgt <- function (year, month, day, hour, minute,
                   Tair, relhum, speed, zspeed, dT, urban)
 {
   num_obs <- length(year)
-  est_speed=rep(0.0, num_obs)
   Tg=rep(0.0, num_obs)
   Tnwb=rep(0.0, num_obs)
   Tpsy=rep(0.0, num_obs)
@@ -15,7 +14,7 @@ out <- .C("wbgt", num_obs=as.integer(num_obs), year=as.integer(year), month=as.i
             lat=as.double(lat), lon=as.double(lon), solar=as.double(solar), pres=as.double(pres), 
             Tair=as.double(Tair), relhum=as.double(relhum), speed=as.double(speed), 
             zspeed=as.double(zspeed), 
-            dT=as.double(dT), urban=as.integer(urban), est_speed=as.double(est_speed), 
+            dT=as.double(dT), urban=as.integer(urban),
             Tg=as.double(Tg), 
             Tnwb=as.double(Tnwb), Tpsy=as.double(Tpsy), Twbg=as.double(Twbg), status=as.integer(status), PACKAGE="wbgt")
 
