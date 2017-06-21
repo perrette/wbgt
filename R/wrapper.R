@@ -12,12 +12,12 @@ wbgt <- function (year, month, day, hour, minute,
   
 out <- .C("wbgt", num_obs=as.integer(num_obs), year=as.integer(year), month=as.integer(month), day=as.integer(day),
             hour=as.integer(hour), minute=as.integer(minute), gmt=as.integer(gmt), avg=as.integer(avg),
-            lat=as.single(lat), lon=as.single(lon), solar=as.single(solar), pres=as.single(pres), 
-            Tair=as.single(Tair), relhum=as.single(relhum), speed=as.single(speed), 
-            zspeed=as.single(zspeed), 
-            dT=as.single(dT), urban=as.integer(urban), est_speed=as.single(est_speed), 
-            Tg=as.single(Tg), 
-            Tnwb=as.single(Tnwb), Tpsy=as.single(Tpsy), Twbg=as.single(Twbg), status=as.integer(status), PACKAGE="wbgt")
+            lat=as.double(lat), lon=as.double(lon), solar=as.double(solar), pres=as.double(pres), 
+            Tair=as.double(Tair), relhum=as.double(relhum), speed=as.double(speed), 
+            zspeed=as.double(zspeed), 
+            dT=as.double(dT), urban=as.integer(urban), est_speed=as.double(est_speed), 
+            Tg=as.double(Tg), 
+            Tnwb=as.double(Tnwb), Tpsy=as.double(Tpsy), Twbg=as.double(Twbg), status=as.integer(status), PACKAGE="wbgt")
 
 # any calculation based on pressure outside of normal range yields NA
 out[pres > 2000 | pres < 800] <- NA

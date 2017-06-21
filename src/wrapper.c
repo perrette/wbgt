@@ -31,9 +31,9 @@
  * for properly vectorizing the R code
  */
 void wbgt(int *num_obs, int *year, int *month, int *day, int *hour, int *minute, int *gmt, int *avg, 
-    float *lat, float *lon, float *solar, float *pres, float *Tair, float *relhum, float *speed, float *zspeed, 
-    float *dT, int *urban, 
-    float *est_speed, float *Tg, float *Tnwb, float *Tpsy, float *Twbg,
+    double *lat, double *lon, double *solar, double *pres, double *Tair, double *relhum, double *speed, double *zspeed, 
+    double *dT, int *urban, 
+    double *est_speed, double *Tg, double *Tnwb, double *Tpsy, double *Twbg,
     int *status)
 {
   int n = *num_obs;

@@ -132,11 +132,11 @@ PROCESS DISCLOSED, OR REPRESENTS THAT ITS USE WOULD NOT INFRINGE PRIVATELY OWNED
 
 
 int calc_wbgt(int year, int month, int day, int hour, int minute, int gmt, int avg, 
-              float lat, float lon, float solar, float pres, float Tair, float relhum, 
-              float speed, float zspeed, float dT, int urban, float *est_speed,
-		          float *Tg, float *Tnwb, float *Tpsy, float *Twbg)
+              double lat, double lon, double solar, double pres, double Tair, double relhum, 
+              double speed, double zspeed, double dT, int urban, double *est_speed,
+		          double *Tg, double *Tnwb, double *Tpsy, double *Twbg)
 {
-	float	cza,	/* cosine of solar zenith angle						*/
+	double	cza,	/* cosine of solar zenith angle						*/
 		fdir,	/* fraction of solar irradiance due to direct beam			*/
 		tk,	/* temperature converted to kelvin						*/
 		rh;	/* relative humidity, fraction between 0 and 1				*/
@@ -198,10 +198,10 @@ int calc_wbgt(int year, int month, int day, int hour, int minute, int gmt, int a
  *		 Argonne National Laboratory
  */
 
-int	calc_solar_parameters(int year, int month, double day, float lat, float lon, 
-                          float *solar, float *cza, float *fdir)
+int	calc_solar_parameters(int year, int month, double day, double lat, double lon, 
+                          double *solar, double *cza, double *fdir)
 {
-	float	toasolar, normsolar; 
+	double	toasolar, normsolar; 
 	
 	double days_1900 = 0.0, ap_ra, ap_dec, elev, refr, azim, soldist;
 	
@@ -245,12 +245,12 @@ int	calc_solar_parameters(int year, int month, double day, float lat, float lon,
  *		 Argonne National Laboratory
  */
  
-float Twb(float Tair, float rh, float Pair, float speed, 
-          float solar, float fdir, float cza, int rad)
+double Twb(double Tair, double rh, double Pair, double speed, 
+          double solar, double fdir, double cza, int rad)
 {
-	static float a = 0.56; /* from Bedingfield and Drew */
+	static double a = 0.56; /* from Bedingfield and Drew */
 	
-	float	sza, Tsfc, Tdew, Tref, Twb_prev, Twb_new,
+	double	sza, Tsfc, Tdew, Tref, Twb_prev, Twb_new,
 		eair, ewick, density, 
 		Sc,	/* Schmidt number */
 		h,	/* convective heat transfer coefficient */
@@ -294,13 +294,13 @@ float Twb(float Tair, float rh, float Pair, float speed,
  *
  */
  
-float h_cylinder_in_air(float diameter, float length, float Tair, float Pair, float speed)
+double h_cylinder_in_air(double diameter, double length, double Tair, double Pair, double speed)
 {
-	static float a = 0.56,  /* parameters from Bedingfield and Drew */
+	static double a = 0.56,  /* parameters from Bedingfield and Drew */
 			 b = 0.281,
 			 c = 0.4;
 			 
-	float	density,
+	double	density,
 		Re,	/* Reynolds number								*/
 		Nu;	/* Nusselt number									*/
 
@@ -318,9 +318,9 @@ float h_cylinder_in_air(float diameter, float length, float Tair, float Pair, fl
  *		 Argonne National Laboratory
  */
  
-float Tglobe(float Tair, float rh, float Pair, float speed, float solar, float fdir, float cza)
+double Tglobe(double Tair, double rh, double Pair, double speed, double solar, double fdir, double cza)
 {
-	float	Tsfc, Tref, Tglobe_prev, Tglobe_new, h;
+	double	Tsfc, Tref, Tglobe_prev, Tglobe_new, h;
 
 	int	converged, iter;
 	
@@ -354,9 +354,9 @@ float Tglobe(float Tair, float rh, float Pair, float speed, float solar, float f
  *
  */
  
-float h_sphere_in_air(float diameter, float Tair, float Pair, float speed)
+double h_sphere_in_air(double diameter, double Tair, double Pair, double speed)
 {
-	float	density,
+	double	density,
 		Re,	/* Reynolds number							*/
 		Nu;	/* Nusselt number								*/
 
@@ -374,9 +374,9 @@ float h_sphere_in_air(float diameter, float Tair, float Pair, float speed)
  *  Reference: Buck's (1981) approximation (eqn 3) of Wexler's (1976) formulae.
  */
  
-float esat(float tk, int phase)
+double esat(double tk, int phase)
 {
-	float y, es;
+	double y, es;
 	
 	if ( phase == 0 ) {	/* over liquid water */
 		y = (tk - 273.15)/(tk - 32.18);
@@ -400,9 +400,9 @@ float esat(float tk, int phase)
  *           temperature, K.
  */
  
-float dew_point(float e, int phase)
+double dew_point(double e, int phase)
 {
-	float z, tdk;
+	double z, tdk;
 	
 	if ( phase == 0 ) {	/* dew point */
 		z = log( e / (6.1121*1.004) );
@@ -422,12 +422,12 @@ float dew_point(float e, int phase)
  *  Reference: BSL, page 23.
  */
  
-float viscosity(float Tair)
+double viscosity(double Tair)
 {
-	static float sigma = 3.617,
+	static double sigma = 3.617,
 			 eps_kappa = 97.0;
 			 
-	float	Tr, omega;
+	double	Tr, omega;
 	
 	Tr = Tair / eps_kappa;
 	omega = ( Tr - 2.9 ) / 0.4 * ( -0.034 ) + 1.048;
@@ -440,7 +440,7 @@ float viscosity(float Tair)
  *  Reference: BSL, page 257.
  */
  
-float thermal_cond(float Tair)
+double thermal_cond(double Tair)
 {			 
 	return( ( Cp + 1.25 * R_AIR ) * viscosity(Tair) );
 }
@@ -451,16 +451,16 @@ float thermal_cond(float Tair)
  *  Reference: BSL, page 505.
  */
  
-float diffusivity(float Tair, float Pair)
+double diffusivity(double Tair, double Pair)
 {
-	static float Pcrit_air = 36.4, 
+	static double Pcrit_air = 36.4, 
 			 Pcrit_h2o = 218., 
 			 Tcrit_air = 132., 
 			 Tcrit_h2o = 647.3,
 			 a = 3.640E-4, 
 			 b = 2.334;
 			 
-	float	Patm, Pcrit13, Tcrit512, Tcrit12, Mmix;
+	double	Patm, Pcrit13, Tcrit512, Tcrit12, Mmix;
 	
 	Pcrit13  = pow( ( Pcrit_air * Pcrit_h2o ),(1./3.) );
 	Tcrit512 = pow( ( Tcrit_air * Tcrit_h2o ),(5./12.) );
@@ -478,7 +478,7 @@ float diffusivity(float Tair, float Pair)
  *  Reference: Van Wylen and Sonntag, Table A.1.1
  */
  
-float evap(float Tair)
+double evap(double Tair)
 {			 
 	return( (313.15 - Tair)/30. * (-71100.) + 2.4073E6 );
 }
@@ -489,9 +489,9 @@ float evap(float Tair)
  *  Reference: Oke (2nd edition), page 373.
  */
  
-float emis_atm(float Tair, float rh)
+double emis_atm(double Tair, double rh)
 {
-	float e; 
+	double e; 
 
 	e = rh * esat(Tair,0);
 	return( 0.575 * pow(e, 0.143) );
@@ -839,9 +839,9 @@ int daynum(int year, int month, int day)
  *  Reference: EPA-454/5-99-005, 2000, section 6.2.5
  */
 
-float est_wind_speed(float speed, float zspeed, int stability_class, int urban)
+double est_wind_speed(double speed, double zspeed, int stability_class, int urban)
 {
-	float urban_exp[6] = { 0.15, 0.15, 0.20, 0.25, 0.30, 0.30 },
+	double urban_exp[6] = { 0.15, 0.15, 0.20, 0.25, 0.30, 0.30 },
 		rural_exp[6] = { 0.07, 0.07, 0.10, 0.15, 0.35, 0.55 },
 		exponent,
 		est_speed;
@@ -861,7 +861,7 @@ float est_wind_speed(float speed, float zspeed, int stability_class, int urban)
  *
  *  Reference: EPA-454/5-99-005, 2000, section 6.2.5
  */
-int stab_srdt(int daytime, float speed, float solar, float dT)
+int stab_srdt(int daytime, double speed, double solar, double dT)
 {
 	static int	lsrdt[6][8] = {
 			{1, 1, 2, 4, 0, 5, 6, 0},
