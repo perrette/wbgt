@@ -3,7 +3,7 @@ wbgt <- function (year, month, day, hour, minute,
                   Tair, relhum, speed, zspeed, dT, urban)
 {
   num_obs <- length(year)
-  est_speed=speed
+  est_speed=rep(0.0, num_obs)
   Tg=rep(0.0, num_obs)
   Tnwb=rep(0.0, num_obs)
   Tpsy=rep(0.0, num_obs)
