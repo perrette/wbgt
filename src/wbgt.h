@@ -87,9 +87,9 @@
  * Old K&R variable declarations are copied here to document the code.
  */
 int calc_wbgt(int year, int hour, int day, int month, int minute, int gmt, 
-              int avg, float lat, float lon, float solar, float pres, float Tair, 
-              float relhum, float speed, float zspeed, float dT, int urban, 
-              float* est_speed, float* Tg, float* Tnwb, float* Tpsy, float* Twbg);
+              int avg, double lat, double lon, double solar, double pres, double Tair, 
+              double relhum, double speed, double zspeed, double dT, int urban, 
+              double* est_speed, double* Tg, double* Tnwb, double* Tpsy, double* Twbg);
 /*
  int	year,	4-digit, e.g. 2007								
 month,	month (1-12) or month = 0 implies iday is day of year		
@@ -100,7 +100,7 @@ gmt,		LST-GMT difference, hours (negative in USA)
 avg,		averaging time of meteorological inputs, minutes			
 urban;	select "urban" (1) or "rural" (0) wind speed power law exponent
 
-float	lat,	north latitude, decimal							
+double	lat,	north latitude, decimal							
 lon,		  east longitude, decimal (negative in USA)				
 solar,	  solar irradiance, W/m2						
 pres,		  barometric pressure, mb							
@@ -118,25 +118,25 @@ dT,		    vertical temperature difference (upper minus lower), degC
 */
 
 
-int	calc_solar_parameters(int year, int month, double day, float lat, float lon, 
-                          float *solar, float *cza, float *fdir);
+int	calc_solar_parameters(int year, int month, double day, double lat, double lon, 
+                          double *solar, double *cza, double *fdir);
 /*
  int	year,		 4-digit year, e.g., 2007							
 month;	 2-digit month; month = 0 implies day = day of year			
 
 double day;	day.fraction of month if month > 0;
 else day.fraction of year if month = 0 (GMT)				
-float	lat,	 north latitude									
+double	lat,	 north latitude									
 lon,		   east latitude (negative in USA)						
 *solar,	   solar irradiance (W/m2)							
 *cza,		   cosine of solar zenith angle						
 *fdir;	   fraction of solar irradiance due to direct beam			
 */	
 
-float Twb(float Tair, float rh, float Pair, float speed, 
-          float solar, float fdir, float cza, int rad);
+double Twb(double Tair, double rh, double Pair, double speed, 
+          double solar, double fdir, double cza, int rad);
 /*
-float Tair,		 air (dry bulb) temperature, degC						
+double Tair,		 air (dry bulb) temperature, degC						
 rh,
 Pair,		barometric pressure, mb							
 speed,	wind speed, m/s								
@@ -148,19 +148,19 @@ int	rad;		switch to enable/disable radiative heating;
             no radiative heating --> pyschrometric wet bulb temp		
 */
 
-float h_cylinder_in_air(float diameter, float length, float Tair, float Pair, float speed);
+double h_cylinder_in_air(double diameter, double length, double Tair, double Pair, double speed);
 /*  
-  float	diameter,	cylinder diameter, m								
+  double	diameter,	cylinder diameter, m								
 length,	 cylinder length, m								
 Tair,		 air temperature, K								
 Pair,		 barometric pressure, mb							
 speed;	 fluid (wind) speed, m/s							
 */
 
-float Tglobe(float Tair, float rh, float Pair, float speed, 
-             float solar, float fdir, float cza);
+double Tglobe(double Tair, double rh, double Pair, double speed, 
+             double solar, double fdir, double cza);
 /*  
-  float Tair,		 air (dry bulb) temperature, degC						
+  double Tair,		 air (dry bulb) temperature, degC						
 rh,		 relative humidity, fraction between 0 and 1				
 Pair,		 barometric pressure, mb							
 speed,	 wind speed, m/s								
@@ -169,44 +169,44 @@ fdir,		 fraction of solar irradiance due to direct beam
 cza;		 cosine of solar zenith angle						
 */
 
-float h_sphere_in_air(float diameter, float Tair, float Pair, float speed);
+double h_sphere_in_air(double diameter, double Tair, double Pair, double speed);
   /* 
-  float	diameter,	 sphere diameter, m							
+  double	diameter,	 sphere diameter, m							
   Tair,		 air temperature, K							
   Pair,		 barometric pressure, mb						
   speed;	 fluid (air) speed, m/s						
   */
 
-float esat(float tk, int phase);
+double esat(double tk, int phase);
 /*
-float	tk;	air temperature, K
+double	tk;	air temperature, K
 int	phase;
 */
 
-float dew_point(float e, int phase);
+double dew_point(double e, int phase);
 /*
-float	e;	vapor pressure, mb 
+double	e;	vapor pressure, mb 
 int	phase;
 */
 
-float viscosity(float Tair);
-/* float	Tair;	air temperature, K */
+double viscosity(double Tair);
+/* double	Tair;	air temperature, K */
 
-float thermal_cond(float Tair);
-/*float	Tair;	air temperature, K */
+double thermal_cond(double Tair);
+/*double	Tair;	air temperature, K */
 
-float diffusivity(float Tair, float Pair);
+double diffusivity(double Tair, double Pair);
 /*
-float	Tair,	Air temperature, K 
+double	Tair,	Air temperature, K 
 Pair; Barometric pressure, mb 
 */
 
-float evap(float Tair);
-/* float	Tair;	air temperature, K */
+double evap(double Tair);
+/* double	Tair;	air temperature, K */
   
-float emis_atm(float Tair, float rh);
+double emis_atm(double Tair, double rh);
 /*
-float	Tair,	air temperature, K 
+double	Tair,	air temperature, K 
 rh;	relative humidity, fraction between 0 and 1 
 */
     
@@ -248,16 +248,16 @@ longitude,     Observation site geographic longitude.
 int daynum(int year, int month, int day);
 /*  int year, month, day;*/
 
-float est_wind_speed(float speed, float zspeed, int stability_class, int urban);
+double est_wind_speed(double speed, double zspeed, int stability_class, int urban);
 /*  
 int	stability_class, urban;
-float	speed, zspeed;
+double	speed, zspeed;
 */
 
-int stab_srdt(int daytime, float speed, float solar, float dT);
+int stab_srdt(int daytime, double speed, double solar, double dT);
 /*
 int	daytime;
-float	speed,
+double	speed,
 solar,
 dT;
 */
