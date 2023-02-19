@@ -8,7 +8,13 @@ See documentation in [the original repository](https://github.com/mdljts/wbgt).
 
 This readme focuses on modifications made since it was forked. I only keep the references at the end.
 
-### Functions available in the wbgt modules
+### Install
+
+git clone and python setup.py install or:
+
+pip install git+https://github.com/perrette/wbgt.git
+
+### Functions available in the wbgt module
 
 The functions below are very thin wrappers around the original C code using ctypes.
 See [original C code](src/wbgt.c) for documention.
