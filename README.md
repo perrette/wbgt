@@ -6,6 +6,10 @@ Builds on [work by Max Lieblich, University of Washington, 2016](https://github.
 This python package can be used to estimate wet bulb globe temperature (WBGT) from datasets of standard meterological measurements using models developed by Liljegren et al (1).
 See documentation in [the original repository](https://github.com/mdljts/wbgt).
 
+Sensitivity test (see [notebook](wbgt.ipynb)):
+
+![sensitivity](sensitivity.png)
+
 This readme focuses on modifications made since it was forked. I only keep the references at the end.
 
 ### Install
