@@ -28,17 +28,19 @@ def est_wind_speed(speed, zspeed, stability_class, urban):
     return ext.est_wind_speed(speed, zspeed, stability_class, urban)
 
 
-# def maybe_estimate_windspeed(zspeed, speed, solar, dT, cza, urban, REF_HEIGHT=2):
-#     if ( zspeed == REF_HEIGHT ):
-#         return speed
+def estimate_windspeed(zspeed, speed, solar, dT, cza, urban):
+    REF_HEIGHT=2
 
-#     if ( cza > 0. )
-#         daytime = 1
-#     else
-#         daytime = 0
+    if ( zspeed == REF_HEIGHT ):
+        return speed
 
-#     stability_class = stab_srdt(daytime, speed, solar, dT);
-#     return est_wind_speed(speed, zspeed, stability_class, urban);
+    if ( cza > 0.):
+        daytime = 1
+    else:
+        daytime = 0
+
+    stability_class = stab_srdt(daytime, speed, solar, dT);
+    return est_wind_speed(speed, zspeed, stability_class, urban);
 
 ext.calc_solar_parameters.argtypes = [c_int, c_int, c_double, c_double, c_double, POINTER(c_double), POINTER(c_double), POINTER(c_double)]
 def calc_solar_parameters(year, month, dday, lat, lon, solar):
@@ -70,11 +72,14 @@ def wbgt(tk, rh, pres, speed, solar, fdir, cza):
     rh: relative humidity as fraction
     pres: pressure in mbar (typical value ~ 1000 mb)
     solar: sun input power at a given hour, lon, lat... (as returned by calc_solar_parameters in the original code)
-        => this is a tricky part here and I leave it for later
+    fdir: fraction of direct sun input
+    cza : cosinus azimuh angle
+
+    returns Tg, Tnwb, Tpsy, WBGT
     """
     # calculate the globe, natural wet bulb, psychrometric wet bulb, and
     # outdoor wet bulb globe temperatures
     Tg   = Tglobe(tk, rh, pres, speed, solar, fdir, cza)
     Tnwb = Twb(tk, rh, pres, speed, solar, fdir, cza, 1)
     Tpsy = Twb(tk, rh, pres, speed, solar, fdir, cza, 0)
-    return 0.1 * Tair + 0.2 * Tg + 0.7 * Tnwb
+    return Tg, Tnwb, Tpsy, 0.1 * Tair + 0.2 * Tg + 0.7 * Tnwb

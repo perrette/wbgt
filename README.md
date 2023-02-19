@@ -8,6 +8,27 @@ See documentation in [the original repository](https://github.com/mdljts/wbgt).
 
 This readme focuses on modifications made since it was forked. I only keep the references at the end.
 
+### Functions available in the wbgt modules
+
+The functions below are very thin wrappers around the original C code using ctypes.
+See [original C code](src/wbgt.c) for documention.
+
+#### wbgt(tk, rh, pres, speed, solar, fdir, cza): Tg, Tnwb, Tpsy, WBGT
+
+This is simplified function of calc_wbgt, which takes actual wind speed, solar radiation, cos azimuth angla and fraction of direct irradiance directly
+What it leaves out:
+
+-   conversion to degC to Kelvin (expected inputs are in K, for consistency with other functions)
+-   conversion of relhum (%) to rh (fraction, for consistency with other functions)
+-   calculation of solar, fdir, cza, for greater modularity (e.g. always calculate max wbgt at noon...) and to use sun from climate models (see calc_solar_parameters)
+-   conversion of wind speed at arbitrary height to 2-m wind speed (see estimate_windspeed)
+
+#### calc_solar_parameters(year, month, dday, lat, lon, solar): solar, cza, fdir
+
+#### solarposition(year, month, day, days_1900, latitude, longitude): ap_ra, ap_dec, altitude, refraction, azimuth, distance
+
+#### estimate_windspeed(zspeed, speed, solar, dT, cza, urban) : wind speed at 2 m
+
 ### References
 
 1. Liljegren JC, Carhart RA, Lawday P, Tschopp S, Sharp R. Modeling the wet bulb globe temperature using standard meteorological measurements. J Occup Environ Hyg. 2008;5(10):645-55.
