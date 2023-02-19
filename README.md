@@ -10,6 +10,12 @@ Sensitivity test (see [notebook](wbgt.ipynb)):
 
 ![sensitivity](sensitivity.png)
 
+Temperature vs relative humidity contours. 31C is shown. Wet-bulb temperature 31C contour is shown as dashed line.
+![sensitivity](sensitivity_contours.png)
+Wet-bulb temperature is consdiered critical at 31C, according to the [PSU Heat project](https://theconversation.com/how-hot-is-too-hot-for-the-human-body-our-lab-found-heat-humidity-gets-dangerous-faster-than-many-people-realize-185593)).
+Quick lookup on Wikipedia shows that wet-bulb temperature in the range of 28-33 degC mark a transition toward restricting outdoor activities.
+The color scale on the plot below highligh 35 degC as middle point. Consider the reddish area unsafe!
+
 This readme focuses on modifications made since it was forked. I only keep the references at the end.
 
 ### Install
