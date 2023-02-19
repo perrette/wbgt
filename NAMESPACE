@@ -1,3 +1,0 @@
-useDynLib(wbgt)
-export(wbgt)
-export(wbgt_df)
