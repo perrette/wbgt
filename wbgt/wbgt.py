@@ -1,6 +1,8 @@
 from pathlib import Path
 import ctypes
 from ctypes import c_int, c_double, byref, POINTER
+import numpy as np
+from numpy.ctypeslib import ndpointer
 
 # import shared lib with ctypes
 ext = ctypes.CDLL(list(Path(__file__).parent.glob('*.so'))[0])
@@ -55,7 +57,7 @@ def calc_solar_parameters(year, month, dday, lat, lon, solar):
 ext.solarposition.argtypes = [c_int, c_int, c_double, c_double, c_double,
                   c_double, POINTER(c_double), POINTER(c_double), POINTER(c_double),
                   POINTER(c_double), POINTER(c_double), POINTER(c_double)]
-def solarposition(year, month, day, latitude, longitude, days_1900=0):
+def solarposition(year, month, day, days_1900, latitude, longitude):
     ap_ra = c_double()
     ap_dec = c_double()
     altitude = c_double()
@@ -76,14 +78,16 @@ def wbgt(tk, rh, pres, speed, solar, fdir, cza):
     fdir: fraction of direct sun input
     cza : cosinus azimuh angle
 
-    returns Tg, Tnwb, Tpsy, WBGT
+    returns Tg, Tnwb, WBGT
     """
     # calculate the globe, natural wet bulb, psychrometric wet bulb, and
     # outdoor wet bulb globe temperatures
     Tg   = Tglobe(tk, rh, pres, speed, solar, fdir, cza)
     Tnwb = Twb(tk, rh, pres, speed, solar, fdir, cza, 1)
-    Tpsy = Twb(tk, rh, pres, speed, solar, fdir, cza, 0)
-    return Tg, Tnwb, Tpsy, 0.1 * (tk-273.15) + 0.2 * Tg + 0.7 * Tnwb
+    # Tpsy = Twb(tk, rh, pres, speed, solar, fdir, cza, 0)
+    # return Tg, Tnwb, Tpsy, 0.1 * (tk-273.15) + 0.2 * Tg + 0.7 * Tnwb
+    Twbg = 0.1 * (tk-273.15) + 0.2 * Tg + 0.7 * Tnwb
+    return Tg, Tnwb, Twbg
 
 
 # main function from original code
@@ -114,3 +118,40 @@ def calc_wbgt(year, month, day, hour, minute, gmt, avg,
                 byref(Tg), byref(Tnwb), byref(Tpsy), byref(Twbg))
 
     return est_speed.value, Tg.value, Tnwb.value, Tpsy.value, Twbg.value
+
+
+ext.calc_wbgt_vector.argtypes = [ctypes.c_size_t,
+              ndpointer(c_int, flags="C_CONTIGUOUS"), ndpointer(c_int, flags="C_CONTIGUOUS"), ndpointer(c_int, flags="C_CONTIGUOUS"), ndpointer(c_int, flags="C_CONTIGUOUS"), ndpointer(c_int, flags="C_CONTIGUOUS"), ndpointer(c_int, flags="C_CONTIGUOUS"), ndpointer(c_int, flags="C_CONTIGUOUS"),
+              ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_double, flags="C_CONTIGUOUS"),
+              ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_int, flags="C_CONTIGUOUS"), ndpointer(c_double, flags="C_CONTIGUOUS"),
+                  ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_double, flags="C_CONTIGUOUS"), ndpointer(c_int, flags="C_CONTIGUOUS")]
+def calc_wbgt_vector(year, month, day, hour, minute, gmt, avg,
+              lat, lon, solar, pres, Tair, relhum,
+              speed, zspeed, dT, urban):
+    """
+    returns:
+        est_speed
+        Tg
+        Tnwb
+        Tpsy
+        Twbg
+    """
+    # Broadcast all inputs to the same dimensions
+    year, month, day, hour, minute, gmt, avg, lat, lon, solar, pres, Tair, relhum, speed, zspeed, dT, urban = (np.array(a) for a in np.broadcast_arrays(*locals().values()))
+    size = year.size
+    shape = year.shape
+    # year, month, day, hour, minute, gmt, avg, lat, lon, solar, pres, Tair, relhum, speed, zspeed, dT, urban = [np.array(a) for a in np.broadcast_arrays(2, np.ones(3))]
+
+    est_speed = np.empty(shape)
+    Tg = np.empty(shape)
+    Tnwb = np.empty(shape)
+    Tpsy = np.empty(shape)
+    Twbg = np.empty(shape)
+    status = np.zeros(shape, dtype='int32')
+
+    return_value = ext.calc_wbgt_vector(year.size, year.astype('int32'), month.astype('int32'), day.astype('int32'),
+        hour.astype('int32'), minute.astype('int32'), gmt.astype('int32'), avg.astype('int32'),
+        lat.astype('float64'), lon.astype('float64'), solar.astype('float64'), pres.astype('float64'), Tair.astype('float64'), relhum.astype('float64'),
+        speed.astype('float64'), zspeed.astype('float64'), dT.astype('float64'), urban.astype('int32'), est_speed, Tg, Tnwb, Tpsy, Twbg, status)
+
+    return est_speed, Tg, Tnwb, Tpsy, Twbg

@@ -30,7 +30,7 @@ pip install git+https://github.com/perrette/wbgt.git
 The functions below are very thin wrappers around the original C code using ctypes.
 See [original C code](src/wbgt.c) for documention.
 
-#### wbgt(tk, rh, pres, speed, solar, fdir, cza): Tg, Tnwb, Tpsy, WBGT
+#### wbgt(tk, rh, pres, speed, solar, fdir, cza): Tg, Tnwb, WBGT
 
 This is simplified function of calc_wbgt, which takes actual wind speed, solar radiation, cos azimuth angla and fraction of direct irradiance directly
 What it leaves out:
