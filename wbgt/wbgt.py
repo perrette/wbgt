@@ -4,6 +4,12 @@ from ctypes import c_int, c_double, byref, POINTER
 import numpy as np
 from numpy.ctypeslib import ndpointer
 
+import logging
+logging.basicConfig()
+logger = logging.getLogger('wbgt')
+logger.setLevel(logging.INFO)
+
+
 # import shared lib with ctypes
 ext = ctypes.CDLL(list(Path(__file__).parent.glob('*.so'))[0])
 
@@ -142,6 +148,10 @@ def calc_wbgt_vector(year, month, day, hour, minute, gmt, avg,
     shape = year.shape
     # year, month, day, hour, minute, gmt, avg, lat, lon, solar, pres, Tair, relhum, speed, zspeed, dT, urban = [np.array(a) for a in np.broadcast_arrays(2, np.ones(3))]
 
+    if ((year > 2049) | (year < 1950)).any():
+        raise ValueError("Solar calculations only defined between 1950 and 2049.")
+
+
     est_speed = np.empty(shape)
     Tg = np.empty(shape)
     Tnwb = np.empty(shape)
@@ -153,5 +163,14 @@ def calc_wbgt_vector(year, month, day, hour, minute, gmt, avg,
         hour.astype('int32'), minute.astype('int32'), gmt.astype('int32'), avg.astype('int32'),
         lat.astype('float64'), lon.astype('float64'), solar.astype('float64'), pres.astype('float64'), Tair.astype('float64'), relhum.astype('float64'),
         speed.astype('float64'), zspeed.astype('float64'), dT.astype('float64'), urban.astype('int32'), est_speed, Tg, Tnwb, Tpsy, Twbg, status)
+
+    if (status != 0).any():
+        logger.warning("Some values did not converge or are incorrect. Set with nan.")
+        bad = status != 0
+        est_speed[bad] = np.nan
+        Tg[bad] = np.nan
+        Tnwb[bad] = np.nan
+        Tpsy[bad] = np.nan
+        Twbg[bad] = np.nan
 
     return est_speed, Tg, Tnwb, Tpsy, Twbg

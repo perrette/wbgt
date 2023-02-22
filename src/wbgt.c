@@ -155,7 +155,9 @@ int calc_wbgt(int year, int month, int day, int hour, int minute, int gmt, int a
  *  calculate the cosine of the solar zenith angle and fraction of solar irradiance
  *  due to the direct beam; adjust the solar irradiance if it is out of bounds
  */
-	calc_solar_parameters(year, month, dday, lat, lon, &solar, &cza, &fdir);	
+	int return_value = calc_solar_parameters(year, month, dday, lat, lon, &solar, &cza, &fdir);
+
+	if (return_value != 0) return -1;
 /* 
  *  estimate the wind speed, if necessary
  */
@@ -206,9 +208,12 @@ int	calc_solar_parameters(int year, int month, double day, double lat, double lo
 	
 	double days_1900 = 0.0, ap_ra, ap_dec, elev, refr, azim, soldist;
 	
-	solarposition(year, month, day, days_1900, (double)lat, (double)lon, 
+	int return_value = solarposition(year, month, day, days_1900, (double)lat, (double)lon,
 		&ap_ra, &ap_dec, &elev, &refr, &azim, &soldist);
 	*cza = cos( (90.-elev)*DEG_RAD );
+
+	if (return_value != 0) return -1;
+
 	toasolar = SOLAR_CONST * max(0.,*cza) / (soldist*soldist);
 /* 
  *  if the sun is not fully above the horizon 
